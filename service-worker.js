@@ -16,7 +16,7 @@ Copyright 2021 Google LLC
 
 // 
 import { warmStrategyCache } from 'workbox-recipes';
-import { CacheFirst } from 'workbox-strategies';
+import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { registerRoute } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { ExpirationPlugin } from 'workbox-expiration';
@@ -45,3 +45,18 @@ warmStrategyCache({
 
 // register a new routine, any requests that's a page navigation will be managed by cache first strategy
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
+
+// Set up asset cache
+registerRoute(
+     // if the type of request is style(CSS), script(JS), worker(Web Worker)
+     ({ request }) => ['style', 'script', 'worker'].includes(request.destination),
+     new StaleWhileRevalidate({
+       cacheName: 'asset-cache',
+       plugins: [
+         new CacheableResponsePlugin({
+           statuses: [0, 200],
+         }),
+       ],
+     }),
+   );
+   
