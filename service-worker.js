@@ -15,7 +15,7 @@ Copyright 2021 Google LLC
  */
 
 // 
-import { warmStrategyCache } from 'workbox-recipes';
+import { warmStrategyCache, offlineFallback } from 'workbox-recipes';
 import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { registerRoute } from 'workbox-routing';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
@@ -59,4 +59,10 @@ registerRoute(
        ],
      }),
    );
+
+// Set up offline fallback
+offlineFallback({
+     pageFallback: '/offline.html',
+   });
+   
    
