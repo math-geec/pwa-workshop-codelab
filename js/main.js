@@ -18,6 +18,8 @@
 // If you compile your service worker in another way, you can use the URL to it
 // directly in navigator.serviceWorker.register
 import swURL from 'sw:../service-worker.js';
+import { openDB } from 'idb';
+
 
 // Register the service worker
 if ('serviceWorker' in navigator) {
@@ -32,6 +34,15 @@ if ('serviceWorker' in navigator) {
     }
   });
 }
+
+// Set up the database
+// create an IndexedDB database called "settings-store", initilased with version 1 and 
+// an object store called "settings"
+const db = await openDB('settings-store', 1, {
+  upgrade(db) {
+    db.createObjectStore('settings');
+  },
+});
 
 window.addEventListener('DOMContentLoaded', async () => {
   // Set up the editor
