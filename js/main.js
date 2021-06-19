@@ -65,3 +65,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   editor.setContent((await db.get('settings', 'content')) || defaultText);
 
 });
+
+// Set up night mode toggle
+const { NightMode } = await import('./app/night-mode.js');
+new NightMode(
+  document.querySelector('#mode'),
+  async (mode) => {
+    editor.setTheme(mode);
+    // Save the night mode setting when changed
+  },
+  // Retrieve the night mode setting on initialization
+);
