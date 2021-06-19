@@ -61,5 +61,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     await db.put('settings', content, 'content');
   });
 
-  editor.setContent(defaultText);
+  // try to get "content" key from "settings" object store if that value exist
+  editor.setContent((await db.get('settings', 'content')) || defaultText);
+
 });
