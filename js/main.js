@@ -56,5 +56,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Set the initial state in the editor
   const defaultText = `# Welcome to PWA Edit!\n\nTo leave the editing area, press the \`esc\` key, then \`tab\` or \`shift+tab\`.`;
 
+  // Save content to database on edit
+  editor.onUpdate(async (content) => {
+    await db.put('settings', content, 'content');
+  });
+
   editor.setContent(defaultText);
 });
